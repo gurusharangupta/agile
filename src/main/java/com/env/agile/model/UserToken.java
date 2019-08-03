@@ -9,6 +9,8 @@ public class UserToken {
 	private UUID _token;
 	
 	private String message;
+	
+	private String expiresIn;
 
 	public String getEmail() {
 		return email;
@@ -32,6 +34,14 @@ public class UserToken {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public String getExpiresIn() {
+		return expiresIn;
+	}
+
+	public void setExpiresIn(String expiresIn) {
+		this.expiresIn = expiresIn;
 	}
 
 }

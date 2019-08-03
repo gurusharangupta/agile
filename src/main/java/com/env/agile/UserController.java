@@ -1,14 +1,19 @@
 package com.env.agile;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.env.agile.exception.ResourceNotFoundException;
+import com.env.agile.model.Role;
 import com.env.agile.model.User;
 import com.env.agile.model.UserToken;
 import com.env.agile.repository.UserRepository;
@@ -22,8 +27,12 @@ public class UserController {
 	
 	@PostMapping("/signup")
 	@CrossOrigin(origins = "http://localhost:4200")
-	public UserToken signup(@RequestBody User registerUser) {
+	public UserToken signup(@RequestBody User registerUser) throws ResourceNotFoundException {
 		System.out.println("signup method");
+		Role role = new Role();
+		role = this.userRepository.getRoleByName("ADMIN");
+		Set<Role> roles = new HashSet<Role>();
+		roles.add(role);
 		User user = this.userRepository.findUserByEmail(registerUser.getEmail());
 		 UserToken _token = new UserToken();
 		 if(user == null) {
@@ -31,36 +40,31 @@ public class UserController {
 			 user.setEmail(registerUser.getEmail());
 			 user.setActive(true);
 			 user.setPassword(registerUser.getPassword());
-			 this.userRepository.save(user);
+			 user.setRoles(roles);
+			 this.userRepository.saveUser(user);
 			 _token.setEmail(registerUser.getEmail());
 			 _token.set_token(UUID.randomUUID());
 			 _token.setMessage("User has been signed up");
 			 return _token;
 		 }else {
-			 _token.setEmail(registerUser.getEmail());
-			 _token.set_token(null);
-			 _token.setMessage("User already exists!");
-			 return _token;
+			 throw new ResourceNotFoundException("EMAIL_EXISTS");
 		 }
 		
 	}
 	
 	@PostMapping("/login")
 	@CrossOrigin(origins = "http://localhost:4200")
-	public UserToken login(@RequestBody User registerUser) {
-		System.out.println("login method");
+	public UserToken login(@RequestBody User registerUser) throws ResourceNotFoundException {
 		User user = this.userRepository.login(registerUser);
 		 UserToken _token = new UserToken();
 		 if(user != null) {
 			 _token.setEmail(registerUser.getEmail());
 			 _token.set_token(UUID.randomUUID());
 			 _token.setMessage("User login successful");
+			 _token.setExpiresIn("8000");
 			 return _token;
 		 }else {
-			 _token.setEmail(registerUser.getEmail());
-			 _token.set_token(null);
-			 _token.setMessage("No such user exists!");
-			 return _token;
+			 throw new ResourceNotFoundException("INVALID_PASSWORD");
 		 }
 		
 	}
