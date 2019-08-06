@@ -48,7 +48,6 @@ public class UserController {
 			 user.setEnabled(true);
 			 this.userRepository.saveUser(user);
 			 _token.setEmail(registerUser.getUsername());
-			 _token.set_token(UUID.randomUUID());
 			 _token.setMessage("User has been signed up");
 			 return _token;
 		 }else {
@@ -64,9 +63,8 @@ public class UserController {
 		 UserToken _token = new UserToken();
 		 if(user != null) {
 			 _token.setEmail(registerUser.getUsername());
-			 _token.set_token(UUID.randomUUID());
 			 _token.setMessage("User login successful");
-			 _token.setExpiresIn("8000");
+			
 			 return _token;
 		 }else {
 			 throw new ResourceNotFoundException("INVALID_PASSWORD");
