@@ -7,6 +7,8 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,10 +38,13 @@ public class UserController {
 		User user = this.userRepository.findUserByEmail(registerUser.getUsername());
 		 UserToken _token = new UserToken();
 		 if(user == null) {
+			 PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+				String hashedPassword = passwordEncoder.encode(registerUser.getPassword());
 			  user = new User();			 
 			 user.setUsername(registerUser.getUsername());
-			 user.setPassword(registerUser.getPassword());
+			 user.setPassword(hashedPassword);
 			 user.setRoles(roles);
+			 user.setEnabled(true);
 			 this.userRepository.saveUser(user);
 			 _token.setEmail(registerUser.getUsername());
 			 _token.set_token(UUID.randomUUID());

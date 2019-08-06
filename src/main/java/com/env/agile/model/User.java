@@ -12,6 +12,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -40,7 +42,9 @@ public class User implements UserDetails{
 	@Column(name = "enabled", nullable = false)
 	private boolean enabled;
 	
-	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	 @JoinTable(name="USER_ROLES", joinColumns={@JoinColumn(name="USER_ID", referencedColumnName="user_id")}
+	    , inverseJoinColumns={@JoinColumn(name="ROLE_ID", referencedColumnName="ID")})
     private Set<Role> roles;
 
 
