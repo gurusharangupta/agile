@@ -30,19 +30,18 @@ public class UserController {
 	public UserToken signup(@RequestBody User registerUser) throws ResourceNotFoundException {
 		System.out.println("signup method");
 		Role role = new Role();
-		role = this.userRepository.getRoleByName("ADMIN");
+		role = this.userRepository.getRoleByName("ROLE_CLIENT");
 		Set<Role> roles = new HashSet<Role>();
 		roles.add(role);
-		User user = this.userRepository.findUserByEmail(registerUser.getEmail());
+		User user = this.userRepository.findUserByEmail(registerUser.getUsername());
 		 UserToken _token = new UserToken();
 		 if(user == null) {
 			  user = new User();			 
-			 user.setEmail(registerUser.getEmail());
-			 user.setActive(true);
+			 user.setUsername(registerUser.getUsername());
 			 user.setPassword(registerUser.getPassword());
 			 user.setRoles(roles);
 			 this.userRepository.saveUser(user);
-			 _token.setEmail(registerUser.getEmail());
+			 _token.setEmail(registerUser.getUsername());
 			 _token.set_token(UUID.randomUUID());
 			 _token.setMessage("User has been signed up");
 			 return _token;
@@ -58,7 +57,7 @@ public class UserController {
 		User user = this.userRepository.login(registerUser);
 		 UserToken _token = new UserToken();
 		 if(user != null) {
-			 _token.setEmail(registerUser.getEmail());
+			 _token.setEmail(registerUser.getUsername());
 			 _token.set_token(UUID.randomUUID());
 			 _token.setMessage("User login successful");
 			 _token.setExpiresIn("8000");

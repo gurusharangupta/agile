@@ -15,8 +15,8 @@ public class CustomizedUserRepositoryImpl implements CustomizedUserRepository {
 
 	@Override
 	public User findUserByEmail(String email) {
-		Query query = entityManager.createQuery("from User where email like :email");
-		query.setParameter("email", email);
+		Query query = entityManager.createQuery("from User where username like :username");
+		query.setParameter("username", email);
 
 		if (query.getResultList().size() != 0) {
 			return (User) query.getResultList().get(0);
@@ -28,7 +28,7 @@ public class CustomizedUserRepositoryImpl implements CustomizedUserRepository {
 	@Override
 	public User login(User user) {
 		Query query = entityManager.createQuery("from User where email= :email and password=:password");
-		query.setParameter("email", user.getEmail());
+		query.setParameter("email", user.getUsername());
 		query.setParameter("password", user.getPassword());
 		if (query.getResultList().size() != 0) {
 			return (User) query.getResultList().get(0);

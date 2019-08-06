@@ -1,5 +1,7 @@
 package com.env.agile.model;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -10,84 +12,115 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 @Entity
 @Table
-public class User {
+public class User implements UserDetails{
 
+	
+	static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "ID", unique = true, nullable = false)
-	private long id;
-
-	@Column(name = "email")
-	private String email;
-
-	@Column(name = "password")
-	private String password;
-
-	@Column(name = "active")
-	private boolean active;
-
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	 @JoinTable(name="USER_ROLES", joinColumns={@JoinColumn(name="USER_ID", referencedColumnName="ID")}
-	    , inverseJoinColumns={@JoinColumn(name="ROLE_ID", referencedColumnName="ID")})
-	private Set<Role> roles;
-
-	public User(User user) {
-		this.email = user.getEmail();
-		this.password = user.getPassword();
-		this.active = true;
-		
-	}
+	@Column(name = "user_id", nullable = false, updatable = false)
+	private Long id;
 	
-	public User() {
-		super();
+	@Column(name = "username", nullable = false, unique = true)
+	private String username;
+	
+	@Column(name = "password", nullable = false)
+	private String password;
+	
+	@Column(name = "enabled", nullable = false)
+	private boolean enabled;
+	
+	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+    private Set<Role> roles;
+
+
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+		
+        for (Role role : roles) {
+            String name = role.getName().toUpperCase();
+            System.out.println("****"+name);
+           authorities.add(new SimpleGrantedAuthority(name));
+        }
+		
+		return authorities;
 	}
 
-	public long getId() {
-		return id;
+	
+	public boolean isAccountNonExpired() {
+		return true;
 	}
 
-	public void setId(long id) {
-		this.id = id;
+	
+	public boolean isAccountNonLocked() {
+		// we never lock accounts
+		return true;
 	}
 
-	public String getEmail() {
-		return email;
+	
+	public boolean isCredentialsNonExpired() {
+		// credentials never expire
+		return true;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	
+	public boolean isEnabled() {
+		return enabled;
 	}
 
+	
 	public String getPassword() {
 		return password;
 	}
+
+	
+	public String getUsername() {
+		return username;
+	}
+
+
+
+	public Long getId() {
+		return id;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
 
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
-	public boolean isActive() {
-		return active;
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 
-	public void setActive(boolean active) {
-		this.active = active;
-	}
 
 	public Set<Role> getRoles() {
 		return roles;
 	}
 
+
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
-
-
 }

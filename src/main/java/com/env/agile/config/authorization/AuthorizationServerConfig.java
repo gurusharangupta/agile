@@ -2,13 +2,18 @@
 package com.env.agile.config.authorization;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+
+import com.env.agile.service.CustomUserDetailsService;
+
 
 @Configuration
 @EnableAuthorizationServer
@@ -16,10 +21,15 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
+	
+	@Autowired
+	private CustomUserDetailsService userDetailsService;
+
 
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 		endpoints.authenticationManager(authenticationManager);
+		endpoints.userDetailsService(userDetailsService);
 	}
 
 	@Override
@@ -31,7 +41,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 		clients.inMemory().withClient("my-trusted-client").authorizedGrantTypes("client_credentials", "password")
 				.authorities("ROLE_CLIENT", "ROLE_TRUSTED_CLIENT").scopes("read", "write", "trust")
-				.resourceIds("oauth2-resource").accessTokenValiditySeconds(5000).secret("secret");
+				.resourceIds("oauth2-resource").accessTokenValiditySeconds(5000).secret("{noop}secret");
 	}
 
 }

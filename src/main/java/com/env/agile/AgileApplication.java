@@ -25,12 +25,12 @@ public class AgileApplication {
 		SpringApplication.run(AgileApplication.class, args);
 	}
 	
-	@Autowired
+/*	@Autowired
 	public void authenticationManager(AuthenticationManagerBuilder builder, UserRepository repo) throws Exception {
 		if(repo.count() == 0) {
 			System.out.println("Not Zero Users");
 		}
 		builder.userDetailsService(customUserDetailsService);
 			
-		}
+		}*/
 	}
