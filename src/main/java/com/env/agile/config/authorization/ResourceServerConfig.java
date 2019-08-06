@@ -23,8 +23,10 @@ import com.env.agile.service.CustomUserDetailsService;
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
 	
 private static final String RESOURCE_ID = "resource_id";
-	
-@Autowired
+
+
+ 
+/*@Autowired
 private CustomUserDetailsService userDetailsService;
 
 
@@ -33,7 +35,7 @@ public void globalUserDetails(AuthenticationManagerBuilder auth) throws Exceptio
     auth.userDetailsService(userDetailsService)
             .passwordEncoder(encoder());
 }
-
+*/
 @Override
 public void configure(HttpSecurity http) throws Exception {
     http
@@ -56,7 +58,7 @@ public BCryptPasswordEncoder encoder(){
     return new BCryptPasswordEncoder();
 }
 
-@Bean
+/*@Bean
 public FilterRegistrationBean corsFilter() {
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     CorsConfiguration config = new CorsConfiguration();
@@ -68,5 +70,5 @@ public FilterRegistrationBean corsFilter() {
     FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
     bean.setOrder(0);
     return bean;
-}
+}*/
 }
