@@ -2,19 +2,27 @@ package com.env.agile.model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
+@Entity
+@Table
 public class Project {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "project_id", nullable = false, updatable = false)
 	private long id;
 	
 	@Column(name="name")
@@ -32,9 +40,10 @@ public class Project {
 	@Column(name="projectPhase")
 	public String projectPhase;
 	
-	@Column(name="description")
-	//@OneToMany(mappedBy="packing",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
-	public ArrayList<TeamMember> teamMembers;
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name="PROJECT_TEAM_MEMBERS", joinColumns={@JoinColumn(name="PROJECT_ID", referencedColumnName="project_id")}
+    , inverseJoinColumns={@JoinColumn(name="TEAM_MEMBER_ID", referencedColumnName="team_member_id")})
+	public Set<TeamMember> teamMembers;
 
 	public long getId() {
 		return id;
@@ -84,12 +93,14 @@ public class Project {
 		this.projectPhase = projectPhase;
 	}
 
-	public ArrayList<TeamMember> getTeamMembers() {
+	public Set<TeamMember> getTeamMembers() {
 		return teamMembers;
 	}
 
-	public void setTeamMembers(ArrayList<TeamMember> teamMembers) {
+	public void setTeamMembers(Set<TeamMember> teamMembers) {
 		this.teamMembers = teamMembers;
 	}
+
+
 
 }

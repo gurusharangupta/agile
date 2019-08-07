@@ -1,10 +1,7 @@
 package com.env.agile;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,8 +18,8 @@ import com.env.agile.model.User;
 import com.env.agile.model.UserToken;
 import com.env.agile.repository.UserRepository;
 
-@RestController
 
+@RestController
 public class UserController {
 	
 	@Autowired
