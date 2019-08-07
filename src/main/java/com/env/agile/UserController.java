@@ -1,4 +1,4 @@
-package com.env.agile.controller;
+package com.env.agile;
 
 import java.util.HashSet;
 import java.util.Set;
