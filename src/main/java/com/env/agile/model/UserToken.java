@@ -1,7 +1,5 @@
 package com.env.agile.model;
 
-import java.util.UUID;
-
 public class UserToken {
 
 	private String email;
