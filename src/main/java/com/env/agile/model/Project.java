@@ -25,31 +25,31 @@ public class Project {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "project_id", nullable = false, updatable = false)
 	private long id;
-	
-	@Column(name="name")
+
+	@Column(name = "name")
 	private String name;
-	
-	@Column(name="description")
+
+	@Column(name = "description")
 	private String description;
-	
-	@Column(name="owner")
+
+	@Column(name = "owner")
 	private String owner;
-	
-	@Column(name="creationDate")
+
+	@Column(name = "creationDate")
 	private Date creationDate;
-	
-	@Column(name="projectPhase")
+
+	@Column(name = "projectPhase")
 	private String projectPhase;
-	
+
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(name="PROJECT_TEAM_MEMBERS", joinColumns={@JoinColumn(name="PROJECT_ID", referencedColumnName="project_id")}
-    , inverseJoinColumns={@JoinColumn(name="TEAM_MEMBER_ID", referencedColumnName="team_member_id")})
+	@JoinTable(name = "PROJECT_TEAM_MEMBERS", joinColumns = {
+			@JoinColumn(name = "PROJECT_ID", referencedColumnName = "project_id") }, inverseJoinColumns = {
+					@JoinColumn(name = "TEAM_MEMBER_ID", referencedColumnName = "team_member_id") })
 	private Set<TeamMember> teamMembers;
 
-/*	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	 @JoinTable(name="USER_PROJECTS", joinColumns={@JoinColumn(name="USER_ID", referencedColumnName="user_id")}
-	    , inverseJoinColumns={@JoinColumn(name="PROJECT_ID", referencedColumnName="project_id")})
-  private SProject> projects;*/
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name ="USER_ID")
+	private User user;
 
 	public long getId() {
 		return id;
@@ -107,14 +107,13 @@ public class Project {
 		this.teamMembers = teamMembers;
 	}
 
-/*	public Set<Project> getProjects() {
-		return projects;
+	public User getUser() {
+		return user;
 	}
 
-	public void setProjects(Set<Project> projects) {
-		this.projects = projects;
-	}*/
-
+	public void setUser(User user) {
+		this.user = user;
+	}
 
 
 }
