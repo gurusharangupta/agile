@@ -1,6 +1,7 @@
 package com.env.agile.repository.impl;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -18,9 +19,11 @@ public class ProjectRepositoryImpl implements ProjectRepository {
 	private EntityManager entityManager;
 
 	@Override
-	public List<Project> listOfProjects() {
-		Query query  = entityManager.createQuery("from User where username like :username");
-	      List<Project> projects = (List<Project>)query.getResultList();
+	public List<Project> listOfProjects(String username) {
+		Query query  = entityManager.createQuery("select projects from User where username like :username");
+		query.setParameter("username", username);
+		List<Project> projects = (List<Project>)query.getResultList();
+		
 		return projects;
 	}
 

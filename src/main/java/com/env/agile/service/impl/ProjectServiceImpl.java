@@ -27,9 +27,8 @@ public class ProjectServiceImpl implements ProjectService {
 	private ProjectRepository projectRepository;
 
 	@Override
-	public List<Project> listOfProjects() {
-
-		return null;
+	public List<Project> listOfProjects(String usernname) {
+		return this.projectRepository.listOfProjects(usernname);
 	}
 
 	@Override
