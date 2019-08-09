@@ -4,11 +4,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+
 import com.env.agile.model.Role;
 import com.env.agile.model.User;
-import com.env.agile.repository.CustomizedUserRepository;
+import com.env.agile.repository.CustomUserRepository;
 
-public class CustomizedUserRepositoryImpl implements CustomizedUserRepository {
+@Repository
+public class CustomUserRepositoryImpl implements CustomUserRepository {
 
 	@PersistenceContext
 	private EntityManager entityManager;

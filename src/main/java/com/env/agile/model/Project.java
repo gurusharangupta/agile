@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -26,24 +27,29 @@ public class Project {
 	private long id;
 	
 	@Column(name="name")
-	public String name;
+	private String name;
 	
 	@Column(name="description")
-	public String description;
+	private String description;
 	
 	@Column(name="owner")
-	public String owner;
+	private String owner;
 	
 	@Column(name="creationDate")
-	public Date creationDate;
+	private Date creationDate;
 	
 	@Column(name="projectPhase")
-	public String projectPhase;
+	private String projectPhase;
 	
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name="PROJECT_TEAM_MEMBERS", joinColumns={@JoinColumn(name="PROJECT_ID", referencedColumnName="project_id")}
     , inverseJoinColumns={@JoinColumn(name="TEAM_MEMBER_ID", referencedColumnName="team_member_id")})
-	public Set<TeamMember> teamMembers;
+	private Set<TeamMember> teamMembers;
+
+/*	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	 @JoinTable(name="USER_PROJECTS", joinColumns={@JoinColumn(name="USER_ID", referencedColumnName="user_id")}
+	    , inverseJoinColumns={@JoinColumn(name="PROJECT_ID", referencedColumnName="project_id")})
+  private SProject> projects;*/
 
 	public long getId() {
 		return id;
@@ -100,6 +106,14 @@ public class Project {
 	public void setTeamMembers(Set<TeamMember> teamMembers) {
 		this.teamMembers = teamMembers;
 	}
+
+/*	public Set<Project> getProjects() {
+		return projects;
+	}
+
+	public void setProjects(Set<Project> projects) {
+		this.projects = projects;
+	}*/
 
 
 

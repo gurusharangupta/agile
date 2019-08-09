@@ -46,9 +46,9 @@ public class UserServiceImpl implements UserService {
 			user.setRoles(roles);
 			user.setEnabled(true);
 			this.userRepository.saveUser(user);
-			 _token.setEmail(registerUser.getUsername());
-			 _token.setMessage("User has been signed up");
-		}else{
+			_token.setEmail(registerUser.getUsername());
+			_token.setMessage("User has been signed up");
+		} else {
 			_token.setEmail(null);
 		}
 		return _token;
