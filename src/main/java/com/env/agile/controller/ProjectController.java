@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,7 +37,9 @@ public class ProjectController {
 			throws ResourceNotFoundException {
 		UserToken _token = new UserToken();
 		projectService.addProject(userName, project);
+		List<Project> projects = projectService.listOfProjects(userName);
 		_token.setMessage("Project Added successfully");
+		_token.setResponse(ResponseEntity.ok().body(project));
 		return _token;
 	}
 
