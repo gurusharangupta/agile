@@ -17,10 +17,10 @@ public class TeamMember {
 	private long id;
 
 	@Column(name = "name")
-	public String name;
+	private String name;
 
 	@Column(name = "expertise")
-	public String expertise;
+	private String expertise;
 
 	public long getId() {
 		return id;

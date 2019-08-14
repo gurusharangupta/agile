@@ -1,12 +1,14 @@
 package com.env.agile.model;
 
-import java.util.UUID;
+import org.springframework.http.ResponseEntity;
 
 public class UserToken {
 
 	private String email;
 	
 	private String message;
+	
+	private ResponseEntity<Object> response;
 	
 
 	public String getEmail() {
@@ -24,6 +26,14 @@ public class UserToken {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public ResponseEntity<Object> getResponse() {
+		return response;
+	}
+
+	public void setResponse(ResponseEntity<Object> response) {
+		this.response = response;
 	}
 
 
