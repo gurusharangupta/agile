@@ -44,4 +44,10 @@ public class ProjectServiceImpl implements ProjectService {
 
 	}
 
+	@Override
+	public void addTeamMembers(Project project) {
+		projectRepository.saveTeamMembers(project);
+		
+	}
+
 }

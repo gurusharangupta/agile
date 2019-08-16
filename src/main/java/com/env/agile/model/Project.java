@@ -1,6 +1,5 @@
 package com.env.agile.model;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Set;
 
@@ -18,8 +17,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table

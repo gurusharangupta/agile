@@ -29,8 +29,19 @@ public class ProjectRepositoryImpl implements ProjectRepository {
 
 	@Override
 	public void addProject(Project project) {
-		System.out.println("Project add begin");
 		entityManager.persist(project);
+		
+	}
+
+	@Override
+	public void saveTeamMembers(Project project) {
+		Query query  = entityManager.createQuery("from Project where project_id like :id");
+		query.setParameter("id", project.getId());
+		Project persistentProject = (Project)query.getResultList().get(0);
+		if(persistentProject != null){
+			persistentProject.setTeamMembers(project.getTeamMembers());
+		}
+		entityManager.persist(persistentProject);
 		
 	}
 

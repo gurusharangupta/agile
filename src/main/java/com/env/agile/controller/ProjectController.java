@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.env.agile.exception.ResourceNotFoundException;
 import com.env.agile.model.Project;
+import com.env.agile.model.TeamMember;
 import com.env.agile.model.UserToken;
 import com.env.agile.service.ProjectService;
 
@@ -37,8 +38,19 @@ public class ProjectController {
 			throws ResourceNotFoundException {
 		UserToken _token = new UserToken();
 		projectService.addProject(userName, project);
-		List<Project> projects = projectService.listOfProjects(userName);
 		_token.setMessage("Project Added successfully");
+		_token.setResponse(ResponseEntity.ok().body(project));
+		return _token;
+	}
+	
+	@PostMapping("/teammembers/add")
+	@CrossOrigin(origins = "http://localhost:4200")
+	public UserToken addTeamMembers(@RequestHeader("Username") String userName, @RequestBody Project project)
+			throws ResourceNotFoundException {
+		UserToken _token = new UserToken();
+		projectService.addTeamMembers(project);
+		List<Project> projects = projectService.listOfProjects(userName);
+		_token.setMessage("Team Members Added successfully");
 		_token.setResponse(ResponseEntity.ok().body(project));
 		return _token;
 	}
