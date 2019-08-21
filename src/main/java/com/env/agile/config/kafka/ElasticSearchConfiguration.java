@@ -1,4 +1,4 @@
-package com.env.agile.configuration;
+package com.env.agile.config.kafka;
 
 public class ElasticSearchConfiguration {
 

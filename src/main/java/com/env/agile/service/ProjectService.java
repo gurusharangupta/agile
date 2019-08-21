@@ -12,4 +12,6 @@ public interface ProjectService {
 	public List<Project> listOfProjects(String userName);
 
 	public void addProject(String userName, Project project) throws ResourceNotFoundException;
+
+	public void addTeamMembers(Project project);
 }
