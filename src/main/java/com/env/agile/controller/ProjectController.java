@@ -51,7 +51,7 @@ public class ProjectController {
 		projectService.addTeamMembers(project);
 		List<Project> projects = projectService.listOfProjects(userName);
 		_token.setMessage("Team Members Added successfully");
-		_token.setResponse(ResponseEntity.ok().body(project));
+		_token.setResponse(ResponseEntity.ok().body(projects));
 		return _token;
 	}
 
