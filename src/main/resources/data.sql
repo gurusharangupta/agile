@@ -1,15 +1,15 @@
 INSERT INTO ROLE (id,name) values (1,'ROLE_CLIENT');
 create table if not exists oauth_access_token (
   token_id VARCHAR(255),
-  token LONG VARBINARY,
+  token BLOB,
   authentication_id VARCHAR(255) PRIMARY KEY,
   user_name VARCHAR(255),
   client_id VARCHAR(255),
-  authentication LONG VARBINARY,
+  authentication BLOB,
   refresh_token VARCHAR(255)
 );
 create table if not exists oauth_refresh_token (
   token_id VARCHAR(255),
-  token LONG VARBINARY,
-  authentication LONG VARBINARY
+  token BLOB,
+  authentication BLOB
 );
