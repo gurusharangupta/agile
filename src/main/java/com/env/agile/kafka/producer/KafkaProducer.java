@@ -26,7 +26,6 @@ public class KafkaProducer {
 		Map<String, Object> headers = new HashMap<>();
 
 		headers.put(KafkaHeaders.TOPIC, topicName);
-		headers.put("id", "ING");
 
 		kafkaTemplate.send(new GenericMessage<Greetings>(message, headers));
 
