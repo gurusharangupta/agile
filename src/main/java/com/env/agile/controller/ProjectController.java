@@ -27,6 +27,9 @@ public class ProjectController {
 
 	@Autowired
 	private ProjectService projectService;
+	
+	@Autowired
+	private KafkaProducer kafkaProducer;
 
 	@Autowired
 	private KafkaProducer kafkaProducer;
@@ -42,9 +45,12 @@ public class ProjectController {
 	public UserToken addProjects(@RequestHeader("Username") String userName, @RequestBody Project project)
 			throws ResourceNotFoundException {
 		UserToken _token = new UserToken();
+		
+		
 		projectService.addProject(userName, project);
 		_token.setMessage("Project Added successfully");
-		kafkaProducer.sendjsonMessage(new Greetings("Created a New Project",userName));
+		Greetings greeting = new Greetings("Created a project",userName);
+		kafkaProducer.sendjsonMessage(greeting);
 		_token.setResponse(ResponseEntity.ok().body(project));
 		return _token;
 	}
@@ -57,6 +63,8 @@ public class ProjectController {
 		projectService.addTeamMembers(project);
 		List<Project> projects = projectService.listOfProjects(userName);
 		_token.setMessage("Team Members Added successfully");
+		Greetings greeting = new Greetings("Added a team member",userName);
+		kafkaProducer.sendjsonMessage(greeting);
 		_token.setResponse(ResponseEntity.ok().body(projects));
 		return _token;
 	}
