@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.env.agile.exception.ResourceNotFoundException;
+import com.env.agile.kafka.producer.KafkaProducer;
+import com.env.agile.model.Greetings;
 import com.env.agile.model.Project;
 import com.env.agile.model.TeamMember;
 import com.env.agile.model.UserToken;
@@ -25,7 +27,11 @@ public class ProjectController {
 
 	@Autowired
 	private ProjectService projectService;
+	
 
+	@Autowired
+	private KafkaProducer kafkaProducer;
+	
 	@GetMapping("/list")
 	@CrossOrigin(origins = "http://localhost:4200")
 	public List<Project> projects(@RequestHeader("Username") String userName) {
@@ -37,8 +43,12 @@ public class ProjectController {
 	public UserToken addProjects(@RequestHeader("Username") String userName, @RequestBody Project project)
 			throws ResourceNotFoundException {
 		UserToken _token = new UserToken();
+		
+		
 		projectService.addProject(userName, project);
 		_token.setMessage("Project Added successfully");
+		Greetings greeting = new Greetings("Created a project",userName);
+		kafkaProducer.sendjsonMessage(greeting);
 		_token.setResponse(ResponseEntity.ok().body(project));
 		return _token;
 	}
@@ -51,6 +61,8 @@ public class ProjectController {
 		projectService.addTeamMembers(project);
 		List<Project> projects = projectService.listOfProjects(userName);
 		_token.setMessage("Team Members Added successfully");
+		Greetings greeting = new Greetings("Added a team member",userName);
+		kafkaProducer.sendjsonMessage(greeting);
 		_token.setResponse(ResponseEntity.ok().body(projects));
 		return _token;
 	}
