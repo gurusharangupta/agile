@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.env.agile.exception.ResourceNotFoundException;
+import com.env.agile.kafka.producer.KafkaProducer;
+import com.env.agile.model.Greetings;
 import com.env.agile.model.Project;
 import com.env.agile.model.TeamMember;
 import com.env.agile.model.UserToken;
@@ -26,6 +28,9 @@ public class ProjectController {
 	@Autowired
 	private ProjectService projectService;
 
+	@Autowired
+	private KafkaProducer kafkaProducer;
+	
 	@GetMapping("/list")
 	@CrossOrigin(origins = "http://localhost:4200")
 	public List<Project> projects(@RequestHeader("Username") String userName) {
@@ -39,6 +44,7 @@ public class ProjectController {
 		UserToken _token = new UserToken();
 		projectService.addProject(userName, project);
 		_token.setMessage("Project Added successfully");
+		kafkaProducer.sendjsonMessage(new Greetings("Created a New Project",userName));
 		_token.setResponse(ResponseEntity.ok().body(project));
 		return _token;
 	}
